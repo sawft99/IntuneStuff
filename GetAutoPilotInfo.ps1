@@ -1,4 +1,5 @@
-#Get info needed for AutoPilot and optionally make a csv to upload
+#Get info needed for AutoPilot and makes a csv you can upload to the AutoPilot portal
+#Does not rely on any extra PS modules
 #Requires -RunAsAdministrator
 #Outputs to current logged in/console session user
 [System.IO.FileInfo]$CSVFile = $env:SystemDrive + '\Users\' + ((Get-CimInstance -ClassName Win32_ComputerSystem).UserName -split '\\')[1] + '\Downloads\APInfo.csv'
