@@ -17,7 +17,7 @@ if ($Folder.Exists -ne $true) {
     #exit 0
 }
 
-#Check permissions
+#Get current permissions
 $Permissions = Get-Acl $Folder.FullName
 
 #Desired permissions
@@ -62,7 +62,7 @@ if ($Permissions.Access.Count -ne $RuleList.Count) {
     $LASTEXITCODE = 1
 }
 
-#Check that all rules match
+#Check that all permissions match
 foreach ($Rule in $RuleList) {
     $GroupTest = $Permissions.Access | Where-Object -Property IdentityReference -eq $Rule.ID
     if ($GroupTest.Count -lt 1) {
