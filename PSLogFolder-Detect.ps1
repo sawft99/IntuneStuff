@@ -75,6 +75,7 @@ foreach ($Rule in $RuleList) {
             $LASTEXITCODE = 1
         } else {
             Write-Host "Permissions match for $($Rule.ID)"
+            $LASTEXITCODE = 0
         }
     }
 }
