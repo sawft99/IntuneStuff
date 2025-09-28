@@ -86,6 +86,7 @@ if ($null -eq $Permissions) {
         )
         $FileSecurity.AddAccessRule($AccessRule) | Out-Null
     }
+    #Set new ACL rules
     Set-Acl -Path $Folder.FullName -AclObject $FileSecurity | Out-Null
 }
 
