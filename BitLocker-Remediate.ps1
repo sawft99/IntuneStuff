@@ -1,6 +1,6 @@
-#Check if Bitlocker is set to policy settings and undo encryption if it's not
-#Allows for policy to correct on its own
+#Check if Bitlocker is set to policy settings and undo encryption if it's not. Allows for policy to correct on its own
 
+# https://learn.microsoft.com/en-us/windows/win32/secprov/getencryptionmethod-win32-encryptablevolume#parameters
 $EncryptionLevel = 'XtsAes256'
 $DriveType = 'FullyEncrypted'
 $Drive = $Env:SystemDrive
