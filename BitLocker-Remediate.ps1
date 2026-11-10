@@ -9,7 +9,7 @@ $Drive = $Env:SystemDrive
 
 $BLStatus = Get-BitLockerVolume -MountPoint $Drive
 
-if (($BLStatus.EncryptionMethod -eq $EncryptionLevel) -and ($BLStatus.VolumeStatus -ne $DriveType) -and ($BLStatus.VolumeStatus -notmatch 'InProgress')) {
+if (($BLStatus.EncryptionMethod -eq $EncryptionLevel) -and ($BLStatus.VolumeStatus -eq $DriveType) -and ($BLStatus.VolumeStatus -notmatch 'InProgress')) {
     Write-Host "Bitlocker settings for $Drive matches requirements."
     exit 0
 } elseif ($BLStatus.VolumeStatus -match 'InProgress') {
