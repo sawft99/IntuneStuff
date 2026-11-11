@@ -1,20 +1,25 @@
 #Check if Bitlocker is set to policy settings
+#Make sure to use run as 64 bit option in Intune remediation script 
 
 #https://learn.microsoft.com/en-us/windows/win32/secprov/getencryptionmethod-win32-encryptablevolume#parameters
 $EncryptionLevel = 'XtsAes256'
-$DriveType = 'FullyEncrypted'
+$DiskEncryptType = 'Fully Encrypted' #Or "Used Space Only Encrypted"
 $Drive = $Env:SystemDrive
 
 #--------
 
-$BLStatus = Get-BitLockerVolume -MountPoint $Drive
+$BLStatus1 = Get-BitLockerVolume -MountPoint $Drive
+$BLStatus2 = manage-bde -status $Drive | Select-String "Conversion Status:"
 
-if (($BLStatus.EncryptionMethod -eq $EncryptionLevel) -and ($BLStatus.VolumeStatus -eq $DriveType) -and ($BLStatus.VolumeStatus -notmatch 'InProgress')) {
+if (($BLStatus1.EncryptionMethod -eq $EncryptionLevel) -and ($BLStatus2 -match $DiskEncryptType) -and ($BLStatus1.VolumeStatus -notmatch 'InProgress')) {
     Write-Host "Bitlocker settings for $Drive matches requirements."
     exit 0
-} elseif ($BLStatus.VolumeStatus -match 'InProgress') {
-    Write-Host "Bitlocker is encrypting or decrypting for $Drive at $($BLStatus.EncryptionPercentage)%. Check later." 
-    exit 0
+} elseif ($BLStatus1.VolumeStatus -match 'InProgress') {
+    Write-Host "Bitlocker has $($BLStatus1.VolumeStatus) for $Drive at $($BLStatus1.EncryptionPercentage)%. Check later."
+    exit 1
+} elseif ($BLStatus1.VolumeStatus -eq 'FullyDecrypted') {
+    Write-Host "Encryption already undone for $Drive, wait for policy to take effect"
+    exit 1
 } else {
     Write-Host "Bitlocker settings for $Drive does not match requirements."
     exit 1
