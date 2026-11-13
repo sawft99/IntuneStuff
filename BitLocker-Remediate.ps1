@@ -21,6 +21,7 @@ if (($BLStatus1.EncryptionMethod -eq $EncryptionLevel) -and ($BLStatus2 -match $
     Write-Host "Encryption already undone for $Drive, wait for policy to take effect"
     exit 1
 } else {
+    Write-Host "Bitlocker settings for $Drive does not match requirements. EncMethod = $($BLStatus1.EncryptionMethod), EncType = $($BLStatus2), Status = $($BLStatus1.VolumeStatus)"
     Write-Host "Removing encryption for $Drive"
     Disable-BitLocker -MountPoint $Drive
     Start-Sleep -Seconds 5
